@@ -1,0 +1,21 @@
+{
+    "name": "nguye/mvc",
+    "license": "library",
+    "authors": [
+        {
+            "name": "manh tu",
+            "email": "nguyenmanhtu363@gmail.com"
+        }
+    ],
+    "require": {
+        "noahbuscher/macaw": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/",
+            "libs\\": "libs/",
+            "config\\": "config/",
+
+        }
+    }
+}
