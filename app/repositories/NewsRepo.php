@@ -47,7 +47,7 @@ class NewsRepo extends NewsModel{
             return $data;
         }
         else{
-            return ["Message","Not Found"];
+            return false;
         }
 
     }

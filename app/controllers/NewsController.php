@@ -88,20 +88,25 @@ class NewsController  {
     }
     public function search(){
         $keyword = HttpRequest::get('keyword');
-        if($this->news_model->search_news($keyword)){
-            $data=$this->news_model->search_news($keyword);
-
+        $data=$this->news_model->search_news($keyword);
+        if($data){
             //echo json_encode($data);
             HtttpResponse::response_ok($data);
+        }
+        else{
+            HtttpResponse::response_false(array('message','not find'));
         }
 
     }
     public function read_by_category($category_id){
-        if($this->news_model->get_by_category($category_id)){
-            $data = $this->news_model->get_by_category($category_id);
+        $data=$this->news_model->get_by_category($category_id);
+        if($data){
 
             //echo json_encode($data);
             HtttpResponse::response_ok($data);
+        }
+        else{
+            HtttpResponse::response_false(array('message','error'));
         }
     }
     public function read_all(){
