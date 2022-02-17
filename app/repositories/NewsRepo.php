@@ -38,7 +38,7 @@ class NewsRepo extends NewsModel{
         }
     }
     public function search_news($keyword){
-        $keyword=addslashes($keyword);
+        //$keyword=addslashes($keyword);
         $sql='select * from news where keyword like "%'.$keyword.'%" OR title LIKE "%'.$keyword.'%" order by news_id asc;' ;
         //echo  $sql;
         if($this->db->fetch_assoc($sql,0)){

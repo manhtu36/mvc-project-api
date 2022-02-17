@@ -25,8 +25,8 @@ class BaseModel
     {
         $query = 'select * from ' . $table;
         //echo $query;
-        if ($this->db->fetch_assoc($query, 0)) {
-            $data = $this->db->fetch_assoc($query, 0);
+        $data=$this->db->fetch_assoc($query, 0);
+        if ($data) {
 
             return $data;
         }
