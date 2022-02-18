@@ -24,7 +24,6 @@ class NewsRepo extends NewsModel{
         content =\''.$content.'\','.'
         title =\''.$title.'\','.'
         summary =\''.$summary.'\','.'
-        create_at =\''.$create_at.'\','.'
         update_at =\''.$update_at.'\','.'
         keyword =\''.$keyword.'\','.'
         url_image =\''.$url_image.'\' where news_id ='.(int)$news_id ;
