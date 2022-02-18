@@ -82,8 +82,9 @@ class CategoryController  {
 
     }
     public function paging($page_number){
-        if($data = $this->category_model->get_category_by_page_number($page_number)){
-            $data=$this->category_model->get_category_by_page_number($page_number);
+        $data = $this->category_model->get_category_by_page_number($page_number);
+        if($data){
+            
             HtttpResponse::response_ok($data);
         }
     }

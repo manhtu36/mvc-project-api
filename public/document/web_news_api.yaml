@@ -1,0 +1,671 @@
+openapi: 3.0.0 #chuan api
+info:
+  title: Demo Swagger API
+  description: API demo create news
+  version: 1.0.0
+servers:
+  - url: 'https://127.0.0.1'
+    description: main prd server (v1 for now)
+  - url: 'https://127.0.0.1'
+    description: Internal staging server (for testing purpose) TBD
+  
+
+paths:
+  /news/create: #Uri request
+    post: #method
+      tags: #objets 
+        - news
+      summary: create news
+      operationId: create #function name in codegen
+      parameters:
+        - name: auth
+          in: header
+          schema:
+            type: string
+          description: an authorization header
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/newsCreatRequest'
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/info_news'
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+                      
+        
+                  
+  /news/read-by-id/{news_id}: #Uri request
+    get: #method
+      tags: #objets 
+        - news
+      summary: Get detail news
+      operationId: read_by_id #function name in codegen
+      
+      parameters: 
+        - in: path
+          name: news_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/info_news'
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+        
+  /news/{category_id}: #Uri request
+    get: #method
+      tags: #objets 
+        - news
+      summary: Get  news by category
+      operationId: read_by_category #function name in codegen
+      
+      parameters: 
+        - in: path
+          name: category_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/array_news'
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+        
+                      
+  /news/update: #uri request
+    put: #method
+      tags: #objets 
+        - news
+      summary: update news
+      operationId: update #function name in codegen
+      parameters:
+        - name: auth
+          in: header
+          schema:
+            type: string
+          description: an authorization header
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/updatenewsRequest'
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/info_news'
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      
+                      message: "Bad Request"
+        
+  /news/delete/{news_id}:
+    delete: #method
+      tags: #objets 
+        - news
+      summary: delete news
+      operationId: delete #function name in codegen
+      
+      parameters: 
+        - in: path
+          name: news_id
+          schema:
+            type: integer
+          required: true
+        - name: auth
+          in: header
+          schema:
+            type: string
+          description: an authorization header
+          required: true
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      
+                      message: "Bad Request"
+        
+  /news/search:
+    post: #method
+      tags: #objets 
+        - news
+      summary: search news
+      operationId: search #function name in codegen
+      parameters:
+        - name: auth
+          in: header
+          schema:
+            type: string
+          description: an authorization header
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              properties:
+                keyword:
+                  type: string
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/array_news"
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      
+                      message: "Bad Request"
+             
+  /news/list:
+    get: #method
+      tags: #objets 
+        - news
+      summary: Get list news
+      operationId: read_all #function name in codegen
+      
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/array_news'
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+  /news/page/{page_number}:
+    get: #method
+      tags: #objets 
+        - news
+      summary: Get  news by page number
+      operationId: paging #function name in codegen
+      
+      parameters: 
+        - in: path
+          name: page_number
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/array_news'
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+  /news/num-record:
+    get: #method
+      tags: #objets 
+        - news
+      summary: Get num-record
+      operationId: total_record #function name in codegen
+      
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  total_record:
+                    type: integer
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+  /category/create:
+    post: #method
+      tags: #objets 
+        - category
+      summary: category news
+      operationId: create_category #function name in codegen
+      parameters:
+        - name: auth
+          in: header
+          schema:
+            type: string
+          description: an authorization header
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/create_category_request'
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/info_category'
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+  /category/update:
+    put: #method
+      tags: #objets 
+        - category
+      summary: update category
+      operationId: update_category #function name in codegen
+      parameters:
+        - name: auth
+          in: header
+          schema:
+            type: string
+          description: an authorization header
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/update_category_request'
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/info_category'
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      
+                      message: "Bad Request"
+  /category/list:
+    get: #method
+      tags: #objets 
+        - category
+      summary: Get list category
+      operationId: read_all_category #function name in codegen
+      
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/array_category'
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+  /category/delete/{id_category}:
+    delete: #method
+      tags: #objets 
+        - category
+      summary: delete category
+      operationId: delete_category #function name in codegen
+      
+      parameters: 
+        - in: path
+          name: id_category
+          schema:
+            type: integer
+          required: true
+        - name: auth
+          in: header
+          schema:
+            type: string
+          description: an authorization header
+          required: true
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+  /admin/login:
+    post: #method
+      tags: #objets 
+        - admin
+      summary: login page admin
+      operationId: login #function name in codegen
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/admin_login_request'
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  token:
+                    type: string
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+  /admin/logout:
+    delete: #method
+      tags: #objets 
+        - admin
+      summary: logout
+      operationId: logout #function name in codegen
+      parameters:
+        - name: auth
+          in: header
+          schema:
+            type: string
+          description: an authorization header
+          required: true
+            
+        
+      responses:
+        '200': #status of response
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "401":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+              examples:
+                Common400:
+                  value:
+                    error:
+                      status: 401
+                      message: "Bad Request"
+components:
+  schemas:
+    newsCreatRequest:
+      type: object
+      properties:
+        category_id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        keyword:
+          type: string
+        url_image:
+          type: string
+        create_at:
+          type: string
+        update_at:
+          type: string
+        summary:
+          type: string
+          
+      required: 
+        - category_id
+        - keyword
+        - content
+        - title
+        - create_at
+        - summary
+        
+    updatenewsRequest:
+      type: object
+      properties:
+        news_id:
+          type: integer
+        category_id:
+          type: integer
+        keyword:
+          type: string
+        url_image: 
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        update_at: 
+          type: string
+        summary:
+          type: string
+      required: 
+        - news_id
+        - category_id
+        - keyword
+        - content
+        - title
+        - summary
+    create_category_request:
+      type: object
+      properties:
+        category_name:
+          type: string
+        url_image:
+          type: string
+    info_category:
+      type: object
+      properties:
+        category_id:
+          type: integer
+        category_name:
+          type: string
+        url_image:
+          type: string
+    update_category_request:
+      type: object
+      properties:
+        category_id:
+          type: integer
+        category_name:
+          type: string
+        url_image:
+          type: string
+    admin_login_request:
+      type: object
+      properties:
+        admin_name:
+          type: string
+        pass:
+          type: string
+    array_news:
+      type: array
+      items:
+        $ref: "#/components/schemas/info_news"
+    array_category:
+      type: array
+      items:
+        $ref: "#/components/schemas/info_category"
+    BadRequestError:
+      type: object
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        
+      required:
+        - message
+        
+    info_news:
+      type: object
+      properties:
+        news_id:
+          type: integer
+        category_id:
+          type: integer
+        title:
+          type: string
+        keyword:
+          type: string
+        content:
+          type: string
+        url_image:
+          type: string
+        summary:
+          type: string
+        create_at:
+          type: string
+        update_at:
+          type: string
