@@ -42,7 +42,14 @@ class CategoryController  {
         if($this->middle_ware->verify_token()){
             $data = HttpRequest::get_all_field();
             //print_r($data);
-            $image=$data->url_image?Helper::save($data->url_image,'category'):$data->url_image;
+
+            if(strlen($data->url_image)>200){
+                $image=Helper::save($data->url_image,'category');
+            }else{
+                $image=$data->url_image;
+                $image=str_replace('http://localhost:8080/mvc/public/image/','',$image);
+            }
+
             //print_r( HttpRequest::get(('category_id')));
             $respon =$this->category_model->update_category(HttpRequest::get('category_id'), HttpRequest::get('category_name') , $image);
             if($respon){

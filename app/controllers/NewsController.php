@@ -45,7 +45,15 @@ class NewsController  {
     public function update(){
         if($this->middle_ware->verify_token()){
             $data = HttpRequest::get_all_field();
-            $image=$data->url_image?Helper::save($data->url_image,'news'):$data->url_image;
+
+            if(strlen($data->url_image)>100){
+                $image=Helper::save($data->url_image,'news');
+            }else{
+                $image=$data->url_image;
+                $image=str_replace('http://localhost:8080/mvc/public/image/','',$image);
+            }
+
+
             $respon =$this->news_model->update_news(HttpRequest::get('news_id'),HttpRequest::get('category_id'),HttpRequest::get('content') , HttpRequest::get('title'),HttpRequest::get('summary'),HttpRequest::get('create_at'),HttpRequest::get('update_at'),HttpRequest::get('keyword'),$image);
             if($respon){
                 //echo json_encode(array('Message','Updated'))  ;
