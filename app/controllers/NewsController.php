@@ -24,7 +24,7 @@ class NewsController  {
             $data = HttpRequest::get_all_field();
             //print_r($data);
             $image=$data->url_image?Helper::save($data->url_image,'news'):$data->url_image;
-            $respon=$this->news_model->create_news(HttpRequest::get('category_id'),HttpRequest::get('content') , HttpRequest::get('title'),HttpRequest::get('summary'),HttpRequest::get('create_at'),HttpRequest::get('update_at'),HttpRequest::get('keyword'),$image);
+            $respon=$this->news_model->create_news(HttpRequest::get('category_id'),$data->content , HttpRequest::get('title'),HttpRequest::get('summary'),HttpRequest::get('create_at'),HttpRequest::get('update_at'),HttpRequest::get('keyword'),$image);
 
             if($respon){
                 //echo json_encode(array('Message','Created'))  ;
@@ -54,7 +54,7 @@ class NewsController  {
             }
 
 
-            $respon =$this->news_model->update_news(HttpRequest::get('news_id'),HttpRequest::get('category_id'),HttpRequest::get('content') , HttpRequest::get('title'),HttpRequest::get('summary'),HttpRequest::get('create_at'),HttpRequest::get('update_at'),HttpRequest::get('keyword'),$image);
+            $respon =$this->news_model->update_news(HttpRequest::get('news_id'),HttpRequest::get('category_id'),$data->content , HttpRequest::get('title'),HttpRequest::get('summary'),HttpRequest::get('create_at'),HttpRequest::get('update_at'),HttpRequest::get('keyword'),$image);
             if($respon){
                 //echo json_encode(array('Message','Updated'))  ;
             
