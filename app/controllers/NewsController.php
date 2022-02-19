@@ -118,7 +118,7 @@ class NewsController  {
         }
     }
     public function read_all(){
-        $data = $this->news_model->get_all('news');
+        $data = $this->news_model->get_all_news();
         if($data){
 
             HtttpResponse::response_ok($data);

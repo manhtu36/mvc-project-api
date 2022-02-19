@@ -9,7 +9,7 @@ class NewsRepo extends NewsModel{
         if($this->db->query($sql)){
             $id =$this->db->insert_id();
 
-            $data =$this->get_by_id('news',$id);
+            $data =$this->get_datail_news_and_category_name($id);
             return $data;
         }
         else{
@@ -29,7 +29,7 @@ class NewsRepo extends NewsModel{
         url_image =\''.$url_image.'\' where news_id ='.(int)$news_id ;
         //echo $sql;
         if($this->db->query($sql)){
-            $data=$this->get_by_id('news',$news_id);
+            $data=$this->get_datail_news_and_category_name($news_id);
             return $data ;
         }
         else{
@@ -72,6 +72,24 @@ class NewsRepo extends NewsModel{
         }
         else{
             return false;
+        }
+    }
+    public function get_all_news(){
+        $query = 'select news_id, title ,summary, keyword, news.url_image, content, news.category_id, category_name from news inner join  category on news.category_id = category.category_id' ;
+
+        //echo $query;
+        $data=$this->db->fetch_assoc($query, 0);
+        if ($data) {
+
+            return $data;
+        }
+    }
+    public function get_datail_news_and_category_name($news_id){
+        $query='select news_id, title ,summary, keyword, news.url_image, content, news.category_id, category_name from news inner join  category on news.category_id = category.category_id where news_id ='.$news_id;
+        $data=$this->db->fetch_assoc($query, 1);
+        if ($data) {
+
+            return $data;
         }
     }
 
